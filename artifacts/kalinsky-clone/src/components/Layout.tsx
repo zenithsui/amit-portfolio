@@ -6,12 +6,12 @@ import { useEffect } from 'react';
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   
-  // Only the home page is light
-  const isLight = location === '/';
+  // All pages use dark theme; the light phase is handled by the IntroScreen overlay on Home
+  const isLight = false;
   
-  const bg = isLight ? '#ececec' : '#121212';
-  const text = isLight ? '#121212' : '#ececec';
-  const muted = isLight ? 'rgba(18, 18, 18, 0.4)' : 'rgba(236, 236, 236, 0.5)';
+  const bg = '#121212';
+  const text = '#ececec';
+  const muted = 'rgba(236, 236, 236, 0.5)';
 
   useEffect(() => {
     document.body.style.backgroundColor = bg;
