@@ -5,35 +5,34 @@ export default function Contact() {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText('hello@kalinsky.design');
+    navigator.clipboard.writeText('amit@xyz.com');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
     <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center relative px-6 overflow-hidden bg-[#121212]">
-      {/* Top Links */}
-      <div className="fixed top-12 left-1/2 -translate-x-1/2 text-[11px] uppercase tracking-wider text-[rgba(236,236,236,0.5)] z-30">
-        <a href="https://www.linkedin.com/in/max-kalinsky" target="_blank" rel="noreferrer" className="hover:text-[#ececec] transition-colors">
-          Linkedin
-        </a>
-      </div>
 
       {/* Center Links & Email */}
       <div className="w-full max-w-5xl flex justify-between items-center z-20">
-        <a href="#" className="text-[11px] uppercase tracking-wider text-[rgba(236,236,236,0.5)] hover:text-[#ececec] transition-colors hidden md:block">
+        <a
+          href="https://www.instagram.com/amt.exee/"
+          target="_blank"
+          rel="noreferrer"
+          className="text-[11px] uppercase tracking-wider text-[rgba(236,236,236,0.5)] hover:text-[#ececec] transition-colors hidden md:block"
+        >
           Instagram
         </a>
         
         <div 
-          className="text-[24px] md:text-[42px] tracking-tight relative group"
+          className="text-[24px] md:text-[42px] tracking-tight relative group cursor-pointer"
           onClick={handleCopy}
         >
           <motion.div
             animate={{ opacity: copied ? 0 : 1 }}
             className="group-hover:opacity-60 transition-opacity duration-300"
           >
-            hello@kalinsky.design
+            amit@xyz.com
           </motion.div>
           {copied && (
             <motion.div 
@@ -46,9 +45,8 @@ export default function Contact() {
           )}
         </div>
 
-        <a href="#" className="text-[11px] uppercase tracking-wider text-[rgba(236,236,236,0.5)] hover:text-[#ececec] transition-colors hidden md:block">
-          Youtube
-        </a>
+        {/* Spacer to keep email centred */}
+        <div className="hidden md:block w-[72px]" />
       </div>
 
       {/* Mountain Graphic & Footer Message */}

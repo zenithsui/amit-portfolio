@@ -33,7 +33,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
           style={{ color: muted }}
         >
           <div className="flex flex-col">
-            <Link href="/works" className="hover:opacity-100 transition-opacity pointer-events-auto">Works [4]</Link>
+            <a
+              href="https://storage7.vercel.app/projects"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:opacity-100 transition-opacity pointer-events-auto"
+            >
+              Projects [4]
+            </a>
           </div>
           <Link href="/contact" className="hover:opacity-100 transition-opacity pointer-events-auto">Contact</Link>
         </motion.div>
@@ -48,12 +55,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
         className="fixed bottom-6 w-full px-6 md:px-12 flex justify-between items-end text-[11px] uppercase tracking-wider z-40 pointer-events-none" 
         style={{ color: muted }}
       >
-        <Link href="/works" className="hover:opacity-100 transition-opacity pointer-events-auto">
-          Works {location !== '/' && '[4]'}
-        </Link>
-        <Link href="/about" className="hover:opacity-100 transition-opacity absolute left-1/2 -translate-x-1/2 pointer-events-auto">
+        <a
+          href="https://storage7.vercel.app/projects"
+          target="_blank"
+          rel="noreferrer"
+          className="hover:opacity-100 transition-opacity pointer-events-auto"
+        >
+          Projects {location !== '/' && '[4]'}
+        </a>
+        <a
+          href="https://amitproject14.vercel.app/"
+          target="_blank"
+          rel="noreferrer"
+          className="hover:opacity-100 transition-opacity absolute left-1/2 -translate-x-1/2 pointer-events-auto"
+        >
           About
-        </Link>
+        </a>
         <Link href="/contact" className="hover:opacity-100 transition-opacity pointer-events-auto">
           Contact
         </Link>
