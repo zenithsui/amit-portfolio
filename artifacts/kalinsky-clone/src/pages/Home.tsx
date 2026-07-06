@@ -11,12 +11,12 @@ import p4 from '../assets/p4.jpg';
 const PORTRAITS = [p1, p2, p3, p4];
 
 const TAGLINES = [
-  '[ max kalinsky ]',
+  '[ Yoo guys ]',
   '[ creative designer & developer ]',
   '[ content creator ]',
-  '[ originally from Ukraine ]',
+  '[ originally from india ]',
   '[ open for any collaborations ]',
-  '[ 4+ years experience ]',
+  '[ Comes new in this field ]',
 ];
 
 const N = PORTRAITS.length;
@@ -25,85 +25,22 @@ function mod(n: number, m: number) {
   return ((n % m) + m) % m;
 }
 
-// ─── Ghost trail: a bright cross-star that flashes during photo transitions ──
-function GhostTrail({ visible }: { visible: boolean }) {
-  return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          key="ghost"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.55 } }}
-          transition={{ duration: 0.15 }}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            pointerEvents: 'none',
-            zIndex: 10,
-          }}
-        >
-          {/* Horizontal ray */}
-          <div style={rayStyle(0)} />
-          {/* Vertical ray */}
-          <div style={rayStyle(90)} />
-          {/* Diagonal rays */}
-          <div style={{ ...rayStyle(45), width: '4vw', opacity: 0.5 }} />
-          <div style={{ ...rayStyle(-45), width: '4vw', opacity: 0.5 }} />
-          {/* Center glow */}
-          <div
-            style={{
-              position: 'absolute',
-              width: 5,
-              height: 5,
-              borderRadius: '50%',
-              background: 'rgba(255,255,255,0.95)',
-              boxShadow: '0 0 16px 8px rgba(255,255,255,0.35)',
-            }}
-          />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-function rayStyle(rotate: number): React.CSSProperties {
-  return {
-    position: 'absolute',
-    width: '7vw',
-    height: 1,
-    background:
-      'radial-gradient(ellipse at center, rgba(255,255,255,0.85) 0%, transparent 80%)',
-    transform: `rotate(${rotate}deg)`,
-  };
-}
-
-// ─── Photo carousel — all 6 photos always mounted, positions animated ────────
+// ─── Photo carousel — all 4 photos always mounted, positions animated ────────
 function PhotoCarousel() {
   const [activeIdx, setActiveIdx] = useState(0);
-  const [showGhost, setShowGhost] = useState(false);
   const cooldownRef = useRef(false);
+  const accRef = useRef(0);            // accumulated deltaY for threshold detection
   const autoTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  const triggerGhost = useCallback(() => {
-    setShowGhost(true);
-    setTimeout(() => setShowGhost(false), 750);
-  }, []);
 
   const advance = useCallback(() => {
     setActiveIdx(prev => mod(prev + 1, N));
-    triggerGhost();
-  }, [triggerGhost]);
+  }, []);
 
   const retreat = useCallback(() => {
     setActiveIdx(prev => mod(prev - 1, N));
-    triggerGhost();
-  }, [triggerGhost]);
+  }, []);
 
-  // Reset the auto-advance timer (called after manual scroll)
+  // Reset auto-advance timer after manual scroll
   const resetAutoTimer = useCallback(() => {
     if (autoTimerRef.current) clearInterval(autoTimerRef.current);
     autoTimerRef.current = setInterval(advance, 3200);
@@ -117,23 +54,34 @@ function PhotoCarousel() {
     };
   }, [advance]);
 
-  // Wheel scroll handler — one step per gesture, debounced
+  // Wheel scroll — accumulate delta, fire once per gesture crossing threshold
   useEffect(() => {
-    const onWheel = (e: WheelEvent) => {
-      if (cooldownRef.current) return;
-      cooldownRef.current = true;
-      setTimeout(() => { cooldownRef.current = false; }, 700);
+    const THRESHOLD = 50;
+    let resetAcc: ReturnType<typeof setTimeout>;
 
-      if (e.deltaY > 0) {
-        advance();
-      } else {
-        retreat();
-      }
+    const onWheel = (e: WheelEvent) => {
+      accRef.current += e.deltaY;
+
+      // Reset accumulator after scroll stops
+      clearTimeout(resetAcc);
+      resetAcc = setTimeout(() => { accRef.current = 0; }, 200);
+
+      if (cooldownRef.current) return;
+      if (Math.abs(accRef.current) < THRESHOLD) return;
+
+      cooldownRef.current = true;
+      accRef.current = 0;
+      setTimeout(() => { cooldownRef.current = false; }, 800);
+
+      if (e.deltaY > 0) advance(); else retreat();
       resetAutoTimer();
     };
 
     window.addEventListener('wheel', onWheel, { passive: true });
-    return () => window.removeEventListener('wheel', onWheel);
+    return () => {
+      window.removeEventListener('wheel', onWheel);
+      clearTimeout(resetAcc);
+    };
   }, [advance, retreat, resetAutoTimer]);
 
   return (
@@ -145,7 +93,6 @@ function PhotoCarousel() {
         overflow: 'visible',
       }}
     >
-      <GhostTrail visible={showGhost} />
 
       {PORTRAITS.map((src, i) => {
         // offset: 0=center active, 1=right, N-1=left, others=hidden
