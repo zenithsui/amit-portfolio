@@ -1,15 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import p1 from '../assets/p1.jpg';
+import p2 from '../assets/p2.jpg';
+import p3 from '../assets/p3.jpg';
+import p4 from '../assets/p4.jpg';
 
-// Light-theme portraits (for the bright intro screen)
-const LIGHT_PORTRAITS = [
-  'https://framerusercontent.com/images/LNuAdemYqeftOrcTjYn2hAsRxY.webp',
-  'https://framerusercontent.com/images/3p1mE28q78QYlXTpoau6Wr7Uj8.webp',
-  'https://framerusercontent.com/images/27EuJqCfwU3PoGl151EcESdkZE.webp',
-  'https://framerusercontent.com/images/sqPpCmdmsXructY6ZK3DYQtfFHQ.webp',
-  'https://framerusercontent.com/images/MKApO9zyLCcHTVlFFJuHraG7kk.webp',
-  'https://framerusercontent.com/images/o6HHZP82AWRfwleSETvUGW7KJig.webp',
-];
+// Custom portraits for the intro screen
+const LIGHT_PORTRAITS = [p1, p2, p3, p4];
 
 interface IntroScreenProps {
   onComplete: () => void;

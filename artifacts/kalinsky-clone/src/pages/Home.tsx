@@ -2,15 +2,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IntroScreen } from '../components/IntroScreen';
 
-// Dark-theme portraits (1–6 from the Framer bundle)
-const PORTRAITS = [
-  'https://framerusercontent.com/images/QvTUzgM4QXMJB88t3P4ohJ2Rrw.webp',
-  'https://framerusercontent.com/images/wLEKFalYy783HuwYJayXgqsH3Ic.webp',
-  'https://framerusercontent.com/images/5mxOsRF8TmCJFvCus3HH55HAVXk.webp',
-  'https://framerusercontent.com/images/nkLx9qBMqG0BuvtxpXXg2m8W040.webp',
-  'https://framerusercontent.com/images/Izf8LRZFcldMeGxy64SCfvWjYTo.webp',
-  'https://framerusercontent.com/images/KFA1huAUc5VNhLbKvJEFBAX6OQ.webp',
-];
+import p1 from '../assets/p1.jpg';
+import p2 from '../assets/p2.jpg';
+import p3 from '../assets/p3.jpg';
+import p4 from '../assets/p4.jpg';
+
+// Custom portraits
+const PORTRAITS = [p1, p2, p3, p4];
 
 const TAGLINES = [
   '[ max kalinsky ]',
