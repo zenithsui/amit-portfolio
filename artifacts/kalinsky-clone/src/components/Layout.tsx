@@ -75,7 +75,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           href="/" 
           className="absolute left-1/2 -translate-x-1/2 font-medium lowercase text-[14px] tracking-[0.1em] hover:opacity-70 transition-opacity pointer-events-auto"
         >
-          kd
+          amit
         </Link>
         <div className="flex items-end gap-[2px] h-3 mt-1">
           <div className="w-[2px] h-full bg-current equalizer-bar origin-bottom" />

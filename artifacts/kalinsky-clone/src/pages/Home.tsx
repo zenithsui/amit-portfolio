@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IntroScreen } from '../components/IntroScreen';
 
@@ -87,17 +87,56 @@ function rayStyle(rotate: number): React.CSSProperties {
 function PhotoCarousel() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [showGhost, setShowGhost] = useState(false);
+  const cooldownRef = useRef(false);
+  const autoTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const advance = useCallback(() => {
-    setActiveIdx(prev => mod(prev + 1, N));
+  const triggerGhost = useCallback(() => {
     setShowGhost(true);
     setTimeout(() => setShowGhost(false), 750);
   }, []);
 
-  useEffect(() => {
-    const id = setInterval(advance, 3200);
-    return () => clearInterval(id);
+  const advance = useCallback(() => {
+    setActiveIdx(prev => mod(prev + 1, N));
+    triggerGhost();
+  }, [triggerGhost]);
+
+  const retreat = useCallback(() => {
+    setActiveIdx(prev => mod(prev - 1, N));
+    triggerGhost();
+  }, [triggerGhost]);
+
+  // Reset the auto-advance timer (called after manual scroll)
+  const resetAutoTimer = useCallback(() => {
+    if (autoTimerRef.current) clearInterval(autoTimerRef.current);
+    autoTimerRef.current = setInterval(advance, 3200);
   }, [advance]);
+
+  // Auto-advance
+  useEffect(() => {
+    autoTimerRef.current = setInterval(advance, 3200);
+    return () => {
+      if (autoTimerRef.current) clearInterval(autoTimerRef.current);
+    };
+  }, [advance]);
+
+  // Wheel scroll handler — one step per gesture, debounced
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      if (cooldownRef.current) return;
+      cooldownRef.current = true;
+      setTimeout(() => { cooldownRef.current = false; }, 700);
+
+      if (e.deltaY > 0) {
+        advance();
+      } else {
+        retreat();
+      }
+      resetAutoTimer();
+    };
+
+    window.addEventListener('wheel', onWheel, { passive: true });
+    return () => window.removeEventListener('wheel', onWheel);
+  }, [advance, retreat, resetAutoTimer]);
 
   return (
     <div
@@ -257,9 +296,7 @@ export default function Home() {
               margin: 0,
             }}
           >
-            if they put a cross on you — carry it on your back,
-            <br />
-            and silently bring it to the top.
+            Yoo Guys !!&nbsp;&nbsp; Made by AMIT
           </p>
         </div>
 

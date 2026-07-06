@@ -76,7 +76,7 @@ export function IntroScreen({ onComplete }: IntroScreenProps) {
           fontFamily: 'inherit',
         }}
       >
-        kd
+        amit
       </div>
 
       {/* 6 portrait photos spread across the screen — vertically centered */}
