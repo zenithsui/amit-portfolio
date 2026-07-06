@@ -1,0 +1,10 @@
+{
+  "buildCommand": "pnpm --filter @workspace/kalinsky-clone run build",
+  "outputDirectory": "artifacts/kalinsky-clone/dist",
+  "installCommand": "pnpm install",
+  "framework": null,
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "env": {
+    "BASE_PATH": "/"
+  }
+}
